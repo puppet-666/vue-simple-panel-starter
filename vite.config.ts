@@ -1,3 +1,4 @@
+import { URL, fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
@@ -9,6 +10,15 @@ import { presetAttributify, presetUno } from 'unocss';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    open: true,
+    // host: '0.0.0.0',
+  },
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   plugins: [
     vue(),
     AutoImport({
@@ -38,7 +48,9 @@ export default defineConfig({
     Components({
       dts: true,
       resolvers: [
-        AntDesignVueResolver(),
+        AntDesignVueResolver({
+          importStyle: false,
+        }),
       ],
     }),
     Pages(),
